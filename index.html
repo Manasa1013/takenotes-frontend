@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/eae5839e36.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+    <title>Notes | home</title>
+    <link rel="icon" type="image/x-icon" href="https://res-1.cdn.office.net/todo/557265_2.75.5/favicon.ico">
+</head>
+<body>
+    <nav class="navbar">
+        <header class="header">
+            <a href="#">Keep notes</a>
+        </header>
+        <ul class="categories__list pad-25-lr">
+            <li>
+                <a href="https://signupandlogin.netlify.app/" class="link ">
+                    <em class="fa-solid fa-user"></em>
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+    <main class="main">
+        <div class="flex-wrapper">
+            <section class="task-container">
+                <h3 class="task-heading">
+                    
+                </h3>
+                <div class="input-container">
+                    <input type="text" name="task-title" id="task-title" class="title-input" placeholder="Title" />
+                    <textarea autofocus="true" name="task-content" id="task-content" class="content-area"
+                        placeholder="Take a note" ></textarea>
+                </div>
+                <div class="button-container">
+                    <div class="primary_button-container">
+                        <button type="button" class="button primary-button" id="save-task">Save</button>
+                    </div>
+                    <div class="icon_button-container">
+                        <button class="button icon-button">
+                            <em class="fa-solid fa-palette"></em>
+                        </button>
+                        <button class="button icon-button">
+                            <em class="fa-solid fa-clock"></em>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="task-list-container">
+            <h2 class="heading">TaskList</h2>
+            <div >
+                <ul class="unordered-list"  id="task-list-box">
+            
+                </ul>
+            </div>
+            <div class="unordered-list">
+                <div class="list" id="task-list-box">
+            
+                </div>
+            </div>
+        </section>
+        <div class="edit-wrapper visibility">
+            <div class="task-card edit-position edit-card" id="0">
+                    <input type="text" class ="title-input edit" id="display-header" value="To be edited"/>
+                    <textarea class="content-area edit" id="display-content" value="Edit note.."></textarea>
+                    <div class="button-container">
+                        <div class="primary_button-container">
+                            <button type="button" class="button primary-button" id="save-edit-task">Save</button>
+                        </div>
+                        <div class="icon_button-container">
+                            <button class="button icon-button icon-task">
+                                <em class="fa-solid fa-palette"></em>
+                            </button>
+                            <button class="button icon-button icon-task">
+                                <em class="fa-solid fa-clock"></em>
+                            </button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="toast visibility" id="toast-bar">
+            Some message to display
+        </div>
+    </main>
+    <footer class="footer">
+
+    </footer>
+<script type="module" src="./js/utils/CommonFunctions.js"></script>
+
+<script type="module"  src="./js/index.js"></script>
+
+<script type="module"  src="./js/ApiCalls.js"></script>
+</body>
+</html>
