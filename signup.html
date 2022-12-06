@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/eae5839e36.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/signup.css">
+    <link rel="stylesheet" href="./css/login.css">
+    <title>Notes | signup</title>
+    <link rel="icon" type="image/x-icon" href="https://res-1.cdn.office.net/todo/557265_2.75.5/favicon.ico">
+</head>
+<body>
+    <nav class="navbar">
+        <header class="header">
+            <a href="./index.html">Prod notes</a>
+        </header>
+        <ul class="categories__list pad-25-lr">
+            <li>
+                <a href="./login.html" class="link ">
+                    Login
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+    <main class="main">
+    <div class="wrapper__main">
+      <section class="flex-container">
+        <form onsubmit="">
+          <h1 id="login--heading" class="heading">
+            Sign up
+          </h1>
+
+          <hr></hr>
+          <div id="name--container">
+            <label htmlFor="first-name" class="label">
+              First name
+            </label>
+            <input
+              type="text"
+              id="first-name"
+              class="input"
+              placeholder="James"
+              oninput=""
+              onblur=""
+            />
+            <p class="para text--red"></p>
+          </div>
+          <div id="name--container">
+            <label htmlFor="last-name" class="label">
+              Last name
+            </label>
+            <input
+              type="text"
+              id="last-name"
+              class="input"
+              placeholder="Cameron"
+              oninput="" 
+              onblur=""
+            />
+            <p class="para text--red"></p>
+          </div>
+
+          <div id="email--container">
+            <label htmlFor="email--input" class="label">
+              Email
+            </label>
+            <input
+              id="email--input"
+              class="input"
+              name="emailID"
+              placeholder="jamescameron@mail.com"
+              oninput=""
+              onblur=""
+            />
+            <p class="para text--red"></p>
+          </div>
+          <div id="password--container">
+            <label htmlFor="password--input" class="label">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password--input"
+              class="input"
+              name="password"
+              placeholder="theWay^OfWater2"
+              oninput="" 
+              onblur=""
+            ></input>
+            <button
+              id="is--shown"
+              class="secondary"
+              onclick=""
+            >
+              <i class="fa fa-eye-slash"></i>
+            </button>
+            <p class="para text--red" style="margin-top: 5px">
+            </p>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              id="login--button"
+              class="button login"
+              onclick=""
+            >
+              Sign up
+            </button>
+          </div>
+
+          <hr></hr>
+        </form>
+        <div>
+          <p>Have an account already?</p>
+          <a href="./login.html" class="link--secondary">
+            Log in
+          </a>
+        </div>
+      </section>
+    </div>
+    </main>
+    <footer class="footer">
+    </footer>
+<script type="module" src="./js/utils/CommonFunctions.js"></script>
+
+<script type="module"  src="./js/index.js"></script>
+
+<script type="module"  src="./js/ApiCalls.js"></script>
+</body>
+</html>

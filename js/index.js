@@ -1,4 +1,4 @@
-import { BACKEND, resetValues } from "./utils/CommonFunctions.js";
+import { resetValues, showToast, saveTask } from "./utils/CommonFunctions.js";
 
 const taskTitle = document.querySelector("#task-title");
 const taskContent = document.querySelector("#task-content");
@@ -11,17 +11,25 @@ const body = document.querySelector("body");
 const editWrapper = document.querySelector(".edit-wrapper");
 
 let task = {
-  id: 0,
   title: `Adding crud from db`,
   content: `Working on making db and backend connection to frontend`,
-  // setTime: new Date(),
+  isArchived: false,
+  isDeleted: false,
+  userId: "",
   background: "#000fff",
   isDone: false,
 };
 
-let taskList = getLocalTaskList("taskList") || [];
-async () => console.log(await taskList);
-// let taskList = [];
+let taskList = [];
+//backend url
+export const BACKEND = `https://takenoteslikeapro.manasa1998.repl.co`;
+
+//get task list from backend
+(async function () {
+  taskList = (await getLocalTaskList("taskList")) || [];
+  await renderList(taskList);
+})();
+
 function renderList(arr) {
   if (arr.length > 0) {
     for (let i = 0; i < arr.length; i++) {
@@ -29,8 +37,7 @@ function renderList(arr) {
     }
   }
 }
-//displaying the taskList
-renderList(taskList);
+
 taskTitle.addEventListener(
   "change",
   (e) => {
@@ -56,19 +63,23 @@ editWrapper.addEventListener("click", (e) => {
 
 saveTaskButton.addEventListener(
   "click",
-  () => {
-    taskList = addTaskToList(task, taskList);
-    console.log({ taskList }, "in saving task");
-    let taskToBeAdded = taskList[taskList.length - 1];
-    addTaskToDisplay(taskToBeAdded);
+  async () => {
+    try {
+      let taskToBeAdded = await addTaskToList(task, taskList);
+      console.log({ taskList }, "in saving task");
+      addTaskToDisplay(taskToBeAdded);
 
-    showToast(`${taskToBeAdded.title || "Untitled"} saved successfully `);
-    resetValues(task);
+      showToast(`${taskToBeAdded.title || "Untitled"} saved successfully `);
+      resetValues(task, taskTitle, taskContent);
+    } catch (err) {
+      showToast("Error at saving task");
+      console.error("task cannot be added to display,");
+    }
   },
   false
 );
 
-function addTaskToDisplay(taskObject) {
+async function addTaskToDisplay(taskObject) {
   let taskItem = document.createElement("div");
   let deleteTaskButton = document.createElement("button");
   let editTaskButton = document.createElement("button");
@@ -78,7 +89,7 @@ function addTaskToDisplay(taskObject) {
   let editIcon = document.createElement("em");
   let doneIcon = document.createElement("em");
 
-  taskItem.setAttribute("id", taskObject.id);
+  taskItem.setAttribute("id", taskObject._id);
   taskItem.className = `${taskObject.isDone ? "task-card done" : "task-card"}`;
   console.log(`${taskObject.isDone ? "task-card done" : "task-card"}`);
   deleteTaskButton.setAttribute("class", "icon-task button icon-button");
@@ -91,15 +102,20 @@ function addTaskToDisplay(taskObject) {
 
   taskItem.innerHTML = `<h3 class="task__header--display" id="display-header">${taskObject.title}</h3><p class="task__content--display" id="display-content"> ${taskObject.content} </p>`;
 
-  deleteTaskButton.addEventListener("click", (e) => {
-    console.log(e.target.parentElement.parentElement.id);
-    let deleteItem = document.getElementById(
-      e.target.parentElement.parentElement.id
-    );
-    deleteTaskFromList(e.target.parentElement.parentElement.id);
-    showToast(`Deleted successfully ${taskObject.title} `);
-    let deletedItem = taskListBox.removeChild(deleteItem);
-    console.log(deletedItem);
+  deleteTaskButton.addEventListener("click", async (e) => {
+    try {
+      console.log(e.target.parentElement.parentElement.id);
+      let deleteItem = document.getElementById(
+        e.target.parentElement.parentElement.id
+      );
+      await deleteTaskFromList(e.target.parentElement.parentElement.id);
+      showToast(`Deleted successfully ${taskObject.title} `);
+      let deletedItem = taskListBox.removeChild(deleteItem);
+      console.log(deletedItem);
+    } catch (err) {
+      showToast("Error at deleting the task");
+      console.error(err, "error at deleting task");
+    }
   });
 
   editTaskButton.addEventListener(
@@ -120,7 +136,7 @@ function addTaskToDisplay(taskObject) {
       editCard.children["display-content"].value = taskToBeEdited.content;
       saveEditTaskButton.addEventListener(
         "click",
-        (e) => {
+        async (e) => {
           editCard.id = taskToBeEdited.id;
           let deleteItem = document.getElementById(
             e.target.parentElement.parentElement.parentElement.id
@@ -192,32 +208,20 @@ function addTaskToDisplay(taskObject) {
 
 async function addTaskToList(taskObj, taskArray) {
   console.log(taskObj, taskArray, "from addtasktolist");
-  // if (taskObj.content.length <= 0) return taskArray;
-  if (taskArray.length === 0) {
-    taskArray = await [
-      { ...taskObj, id: Date.now(), title: taskObj.title || "Untitled" },
-    ];
-  } else {
-    taskArray = await [
-      ...taskArray,
-      {
-        ...taskObj,
-        id: Date.now(),
-        title: taskObj.title || "Untitled",
-      },
-    ];
-  }
-  setLocalTaskList(taskArray);
-  console.log(
-    getLocalTaskList("taskList"),
-    "in addTaskto List method from Localstorage"
-  );
-  return getLocalTaskList("taskList");
+  let postedTask = await setTaskListToBackend(taskObj);
+  let taskToBeAdded = postedTask.data.response;
+  return taskToBeAdded;
 }
 
-function deleteTaskFromList(taskObjID) {
-  taskObjID = parseInt(taskObjID, 10);
-  let taskItems = getLocalTaskList("taskList");
+//posting task object to backend
+async function setTaskListToBackend(taskObj) {
+  const response = await axios.post(`${BACKEND}/tasks`, taskObj);
+  console.log(response, "at posting tasks to backend");
+  return response;
+}
+
+async function deleteTaskFromList(taskObjID) {
+  let taskItems = await getLocalTaskList("taskList");
   console.log(taskItems, taskObjID, "before tasks deleted");
   let deleteItemIndex = taskItems.findIndex((taskItem) => {
     return taskItem.id === taskObjID;
@@ -230,22 +234,7 @@ function deleteTaskFromList(taskObjID) {
   return getLocalTaskList("taskList");
 }
 
-function saveTask(taskItem, taskKey, e, _taskValue) {
-  taskItem[taskKey] = e.target.value;
-  console.log(e.target.value, taskKey, taskItem);
-
-  return taskItem;
-}
-
 async function setLocalTaskList(taskList) {
-  try {
-    const postedTaskList = await axios.post(`${BACKEND}/tasks`, {
-      body: taskList[0],
-    });
-    console.log(postedTaskList, "from setting task at backedn");
-  } catch (err) {
-    console.error(err, "error at setting task to backend");
-  }
   return localStorage.setItem("taskList", JSON.stringify(taskList));
 }
 
@@ -253,28 +242,18 @@ async function getLocalTaskList(taskListFromStorage) {
   try {
     const response = await axios.get(`${BACKEND}/tasks`);
     console.log(response, "at getting task List from backend");
-    return response.data.resultData;
+    return response.data.response;
   } catch (err) {
-    console.error(err, "at getting task list from backend");
+    console.error(err, "error at getting task list from backend");
+    showToast("Error at fetching list items");
     return JSON.parse(localStorage.getItem(taskListFromStorage));
   }
-}
-
-function showToast(message) {
-  toastBar.innerHTML = message;
-  toastBar.className = "toast show";
-  return setTimeout(() => {
-    toastBar.className = toastBar.className.replace(
-      "toast show",
-      "toast visibility"
-    );
-  }, 2000);
 }
 
 function findElement(taskID, arr) {
   return arr.find((item) => item.id === taskID);
 }
 
-export { taskList, renderList };
+export { taskList, renderList, toastBar };
 const a = "text-value-test";
 export { a };
