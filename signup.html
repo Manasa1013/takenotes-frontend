@@ -8,11 +8,13 @@
     <script src="https://kit.fontawesome.com/eae5839e36.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="./css/signup.css">
     <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="./css/signup.css">
+    <script type="module" src="./js/signup.js"></script>
     <title>Notes | signup</title>
     <link rel="icon" type="image/x-icon" href="https://res-1.cdn.office.net/todo/557265_2.75.5/favicon.ico">
 </head>
+
 <body>
     <nav class="navbar">
         <header class="header">
@@ -30,27 +32,25 @@
     <main class="main">
     <div class="wrapper__main">
       <section class="flex-container">
-        <form onsubmit="">
+        <form>
           <h1 id="login--heading" class="heading">
             Sign up
           </h1>
 
           <hr></hr>
-          <div id="name--container">
-            <label htmlFor="first-name" class="label">
+          <div id="first-name--container">
+            <label htmlFor="first--name" class="label">
               First name
             </label>
             <input
               type="text"
-              id="first-name"
+              id="first--name"
               class="input"
               placeholder="James"
-              oninput=""
-              onblur=""
             />
-            <p class="para text--red"></p>
+            <p id="first-name--alert" class="para text--red"></p>
           </div>
-          <div id="name--container">
+          <div id="last-name--container">
             <label htmlFor="last-name" class="label">
               Last name
             </label>
@@ -59,10 +59,8 @@
               id="last-name"
               class="input"
               placeholder="Cameron"
-              oninput="" 
-              onblur=""
             />
-            <p class="para text--red"></p>
+            <p id="last-name--alert" class="para text--red"></p>
           </div>
 
           <div id="email--container">
@@ -74,10 +72,8 @@
               class="input"
               name="emailID"
               placeholder="jamescameron@mail.com"
-              oninput=""
-              onblur=""
             />
-            <p class="para text--red"></p>
+            <p id="email--alert" class="para text--red"></p>
           </div>
           <div id="password--container">
             <label htmlFor="password--input" class="label">
@@ -89,17 +85,15 @@
               class="input"
               name="password"
               placeholder="theWay^OfWater2"
-              oninput="" 
-              onblur=""
             ></input>
             <button
+            type="button"
               id="is--shown"
               class="secondary"
-              onclick=""
             >
-              <i class="fa fa-eye-slash"></i>
+              <em class="fa fa-eye-slash"></em>
             </button>
-            <p class="para text--red" style="margin-top: 5px">
+            <p id="password--alert" class="para text--red" style="margin-top: 5px">
             </p>
           </div>
 
@@ -108,7 +102,6 @@
               type="submit"
               id="login--button"
               class="button login"
-              onclick=""
             >
               Sign up
             </button>
@@ -124,13 +117,14 @@
         </div>
       </section>
     </div>
+    <div class="toast visibility" id="toast-bar">
+      Some message to display
+    </div>
     </main>
     <footer class="footer">
     </footer>
-<script type="module" src="./js/utils/CommonFunctions.js"></script>
 
-<script type="module"  src="./js/index.js"></script>
 
-<script type="module"  src="./js/ApiCalls.js"></script>
+
 </body>
 </html>

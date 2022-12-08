@@ -7,7 +7,7 @@
 }
 
 .wrapper__main {
-    margin-top : 2rem;
+  margin-top : 2rem;
   width: 100%;
   color: var(--secondary-text);
   padding: 2rem;
@@ -15,10 +15,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--primary-background);
 }
 
 .flex-container {
-  background-color: var(--text-primary);
+  background-color: var(--primary-white);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -28,7 +29,7 @@
   justify-content: center;
   height: auto;
   max-width: 24rem;
-  filter: drop-shadow(0.5rem 0.5rem 1rem var(--text-secondary));
+  filter: drop-shadow(0.5rem 0.5rem 1rem var(--secondary-text));
   padding-bottom: 1rem;
 }
 
@@ -62,21 +63,23 @@
 
 .button {
   padding: 0.5rem 1rem;
-  background-color: var(--primary-green);
+  background-color: var(--blue);
   border-radius: 0.25rem;
   border: none;
-  color: var(--white);
+  color: var(--primary-white);
   opacity: 0.8;
   width: 100%;
   font-weight: 550;
 }
 
-.button:hover {
+.button:hover , .button:focus {
   opacity: 1;
+  background-color: var(--blue);
+  outline: 1px solid var(--primary-white);
 }
 
 hr {
-  border: 0.1px solid var(--light-green);
+  border: 0.1px solid var(--pastel-blue);
   opacity: 0.6;
 }
 
@@ -93,7 +96,7 @@ hr {
 }
 
 .input {
-  border: 0.125rem solid var(--light-green);
+  border: 0.125rem solid var(--secondary-background);
   border-radius: 0.25rem;
   padding: 0.5rem 0.5rem;
   outline: none;
@@ -103,7 +106,7 @@ hr {
 }
 
 .input:focus {
-  border: 0.125rem solid var(--primary-green);
+  border: 0.125rem solid var(--secondary-blue);
   opacity: 1;
 }
 
@@ -113,9 +116,10 @@ hr {
   border-top-right-radius: 0%;
   border-bottom-right-radius: 0%;
   border-right: none;
+  border: 0.125rem solid var(--secondary-background);
 }
-#passowrd-input :focus {
-  border: 0.125rem solid var(--primary-green);
+#password--input:focus{
+    border: 0.125rem solid var(--blue);
 }
 .secondary {
   padding: 0.5rem 0.5rem;
@@ -134,21 +138,11 @@ hr {
   border-top-left-radius: 0%;
   border-bottom-left-radius: 0%;
   padding: 0.5rem 0.5rem;
-  border: 0.125rem solid var(--light-green);
+  border: 0.125rem solid transparent;
   border-left: none;
 }
 #is--shown:focus {
-  border: 0.125rem solid var(--primary-green);
-}
-.checkbox {
-  border-radius: 0.125rem;
-  display: inline;
-  border: 2px solid transparent;
-  color: var(--primary-green);
-}
-
-.checkbox:focus {
-  border: 2px solid var(--primary-green);
+  border: 0.125rem solid var(--secondary-blue);
 }
 
 .para {
@@ -163,7 +157,7 @@ hr {
 .text--red {
   text-align: left;
   padding-left: 0.3rem;
-  color: var(--red);
+  color: var(--error-red);
 }
 
 .label--terms,
@@ -178,7 +172,7 @@ hr {
 
 .link--secondary {
   text-decoration: none;
-  color: var(--primary-green);
+  color: var(--blue);
 }
 .link--secondary:focus {
   text-decoration: underline;

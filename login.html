@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/eae5839e36.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/signup.css">
+    <link rel="stylesheet" href="./css/login.css">
+    <title>Notes | login</title>
+    <link rel="icon" type="image/x-icon" href="https://res-1.cdn.office.net/todo/557265_2.75.5/favicon.ico">
+</head>
+
+<body>
+    <nav class="navbar">
+        <header class="header">
+            <a href="./index.html">Prod notes</a>
+        </header>
+        <ul class="categories__list pad-25-lr">
+            <li>
+                <a href="./signup.html" class="link ">
+                    Signup
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+    <main class="main">
+        <div class="wrapper__main">
+            <section class="flex-container">
+                <form onsubmit="">
+                    <h1 id="login--heading" class="heading">
+                        Log in
+                    </h1>
+
+                    <hr>
+                    </hr>
+
+                    <div id="email--container">
+                        <label htmlFor="email--input" class="label">
+                            Email
+                        </label>
+                        <input id="email--input" class="input" name="emailID" placeholder="jamescameron@mail.com"
+                            oninput="" onblur="" />
+                        <p class="para text--red"></p>
+                    </div>
+                    <div id="password--container">
+                        <label htmlFor="password--input" class="label">
+                            Password
+                        </label>
+                        <input type="password" id="password--input" class="input" name="password"
+                            placeholder="theWay^OfWater2" oninput="" onblur=""></input>
+                        <button id="is--shown" class="secondary" onclick="">
+                            <em class="fa fa-eye-slash"></em>
+                        </button>
+                        <p class="para text--red" style="margin-top: 5px">
+                        </p>
+                    </div>
+
+                    <div>
+                        <button type="submit" id="login--button" class="button login" onclick="">
+                            Log in
+                        </button>
+                    </div>
+                    <div>
+                        <a href="/" id="forgot--password" class="link--secondary">
+                            Forgot password?
+                        </a>
+                    </div>
+                    <hr>
+                    </hr>
+                    </form>
+                    <div>
+                        <p>Don't have an account?</p>
+                        <a href="./signup.html" class="link--secondary">
+                        Sign up
+                        </a>
+                    </div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+    </footer>
+
+    <script type="module" src="./js/index.js"></script>
+
+    <script type="module" src="./js/signup.js"></script>
+
+    <script type="module" src="./js/ApiCalls.js"></script>
+
+        <script type="module" src="./js/utils/CommonFunctions.js"></script>
+
+</body>
+
+</html>
