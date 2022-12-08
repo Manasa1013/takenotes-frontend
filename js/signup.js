@@ -44,7 +44,6 @@ firstNameInput.addEventListener("input", (eve) => {
 firstNameInput.addEventListener(
   "blur",
   (eve) => {
-    console.log(firstNameInputValue.length, "at blur event");
     if (firstNameInputValue.length === 0) {
       showErrorAlert(firstNameAlert, firstNameInput);
       firstNameAlert.innerHTML = `<span ><i class="fa-solid fa-circle-xmark"></i> Name can't be blank</span>`;
@@ -69,7 +68,6 @@ lastNameInput.addEventListener("input", (eve) => {
 lastNameInput.addEventListener(
   "blur",
   (eve) => {
-    console.log(lastNameInputValue.length, "at blur event");
     if (lastNameInputValue.length === 0) {
       showErrorAlert(lastNameAlert, lastNameInput);
       lastNameAlert.innerHTML = `<span ><i class="fa-solid fa-circle-xmark"></i> Name can't be blank</span>`;
@@ -90,7 +88,6 @@ lastNameInput.addEventListener(
 emailInput.addEventListener("input", (e) => {
   e.preventDefault();
   emailInputValue = e.target.value;
-  console.log(`value : ${emailInputValue}`);
 });
 emailInput.addEventListener("blur", (eve) => {
   eve.preventDefault();
@@ -111,11 +108,9 @@ emailInput.addEventListener("blur", (eve) => {
 
 passwordInput.addEventListener("input", (e) => {
   passwordInputValue = e.target.value;
-  console.log(`password : ${passwordInputValue}`);
 });
 passwordInput.addEventListener("blur", (eve) => {
   eve.preventDefault();
-  console.log(`password on change${passwordInputValue}`);
   if (passwordInputValue.length === 0) {
     showErrorAlert(passwordAlert, passwordInput);
     passwordAlert.innerHTML = `<span><i class="fa-solid fa-triangle-exclamation"></i> Password can't be blank</span>`;
@@ -206,5 +201,4 @@ async function setUserToBackend(user) {
     console.error(err, "error in signing up user to backend");
   }
   // let response = await axios.get(`${BACKEND}/signup`);
-  console.log(response, "From settign ser to backedn");
 }
