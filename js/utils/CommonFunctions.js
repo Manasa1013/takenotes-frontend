@@ -1,4 +1,10 @@
-import { toastBar } from "../index.js";
+import {
+  emailInput,
+  firstNameInput,
+  lastNameInput,
+  passwordInput,
+  toastBar,
+} from "./tagvalue.js";
 
 export function resetValues(taskItem, taskTitle, taskContent) {
   taskItem.id = 0;
@@ -7,9 +13,20 @@ export function resetValues(taskItem, taskTitle, taskContent) {
   taskItem.setTime = new Date();
   taskItem.isDone = false;
   taskItem.background = "#000fff";
-  taskTitle.value = ``;
-  taskContent.value = ``;
+  taskTitle.value = `Adding data after reset`;
+  taskContent.value = `Text added after reset`;
   return taskItem;
+}
+
+export function resetSignupUser(user) {
+  user.firstName = "";
+  user.lastName = "";
+  user.emailID = "";
+  user.password = "";
+  firstNameInput.value = ``;
+  lastNameInput.value = ``;
+  emailInput.value = ``;
+  passwordInput.value = ``;
 }
 
 export function showToast(message) {

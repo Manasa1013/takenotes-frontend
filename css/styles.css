@@ -13,6 +13,7 @@
     --secondary-blue : #0078d4;
     --secondary-white : #976b1f;
     --primary-white : #FFFFFF;
+    --error-red : red;
 }
 *{
     margin: 0;

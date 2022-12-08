@@ -1,4 +1,4 @@
-import { a, renderList, taskList } from "./index.js";
+import { a } from "./index.js";
 
 console.log("From ApiCalls file", a);
 

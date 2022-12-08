@@ -1,33 +1,34 @@
 import { resetValues, showToast, saveTask } from "./utils/CommonFunctions.js";
-
-const taskTitle = document.querySelector("#task-title");
-const taskContent = document.querySelector("#task-content");
-const saveTaskButton = document.querySelector("#save-task");
-const taskListBox = document.querySelector("#task-list-box");
-const toastBar = document.querySelector("#toast-bar");
-const editCard = document.querySelector(".edit-position.task-card");
-const saveEditTaskButton = document.querySelector("#save-edit-task");
-const body = document.querySelector("body");
-const editWrapper = document.querySelector(".edit-wrapper");
+import {
+  taskTitle,
+  taskContent,
+  saveTaskButton,
+  taskListBox,
+  toastBar,
+  editCard,
+  saveEditTaskButton,
+  editWrapper,
+  body,
+  BACKEND,
+} from "./utils/tagvalue.js";
 
 let task = {
   title: `Adding crud from db`,
   content: `Working on making db and backend connection to frontend`,
   isArchived: false,
   isDeleted: false,
-  userId: "",
+  userID: "",
   background: "#000fff",
   isDone: false,
 };
 
 let taskList = [];
-//backend url
-export const BACKEND = `https://takenoteslikeapro.manasa1998.repl.co`;
 
 //get task list from backend
 (async function () {
-  taskList = (await getLocalTaskList("taskList")) || [];
+  taskList = (await getTaskListFromApi("taskList")) || [];
   await renderList(taskList);
+  console.log("at iife", task.userID);
 })();
 
 function renderList(arr) {
@@ -37,6 +38,16 @@ function renderList(arr) {
     }
   }
 }
+
+function getTokenFromLocalStorage() {
+  return JSON.parse(localStorage.getItem("token"));
+}
+function getUserIDFromLocalStorage() {
+  console.log(JSON.parse(localStorage.getItem("userID")));
+  return JSON.parse(localStorage.getItem("userID"));
+}
+//setting token to local storage to make requests to backend
+// setTokenToLocalStorage();
 
 taskTitle.addEventListener(
   "change",
@@ -138,20 +149,23 @@ async function addTaskToDisplay(taskObject) {
         "click",
         async (e) => {
           editCard.id = taskToBeEdited.id;
+          try {
+            let response = await axios.post(
+              `${BACKEND}/${getUserIDFromLocalStorage()}/tasks/${
+                taskToBeEdited.id
+              }`,
+              taskToBeEdited
+            );
+            showToast("Updated task successfully");
+          } catch (err) {
+            console.error(err, "at saving the edited task");
+            showToast("Error while updating the task");
+          }
           let deleteItem = document.getElementById(
             e.target.parentElement.parentElement.parentElement.id
           );
-          deleteTaskFromList(
-            e.target.parentElement.parentElement.parentElement.id
-          );
-          let deletedItem = taskListBox.removeChild(deleteItem);
-          let newTaskList = addTaskToList(
-            { ...taskToBeEdited, id: Date.now() },
-            getLocalTaskList("taskList")
-          );
-          addTaskToDisplay(newTaskList[newTaskList.length - 1]);
+
           editWrapper.classList = ["edit-wrapper visibility"];
-          return newTaskList;
         },
         false
       );
@@ -180,7 +194,7 @@ async function addTaskToDisplay(taskObject) {
     let taskDoneToBeToggledNode = document.getElementById(
       taskDoneToBeToggledID
     );
-    let taskListFromLocalStorage = getLocalTaskList("taskList");
+    let taskListFromLocalStorage = getTaskListFromApi("taskList");
 
     let taskDoneToBeToggled = taskListFromLocalStorage.find(
       (item) => item.id === taskDoneToBeToggledID
@@ -194,7 +208,7 @@ async function addTaskToDisplay(taskObject) {
 
     setLocalTaskList(taskListFromLocalStorage);
 
-    // return getLocalTaskList(taskListFromLocalStorage);
+    // return getTaskListFromApi(taskListFromLocalStorage);
   });
 
   deleteTaskButton.appendChild(deleteIcon);
@@ -208,39 +222,53 @@ async function addTaskToDisplay(taskObject) {
 
 async function addTaskToList(taskObj, taskArray) {
   console.log(taskObj, taskArray, "from addtasktolist");
-  let postedTask = await setTaskListToBackend(taskObj);
+  let postedTask = await setTaskToBackend(taskObj);
   let taskToBeAdded = postedTask.data.response;
   return taskToBeAdded;
 }
 
 //posting task object to backend
-async function setTaskListToBackend(taskObj) {
-  const response = await axios.post(`${BACKEND}/tasks`, taskObj);
+async function setTaskToBackend(taskObj) {
+  console.log(getUserIDFromLocalStorage(), "from setTakslISt");
+  const response = await axios.post(
+    `${BACKEND}/${getUserIDFromLocalStorage()}/tasks`,
+    taskObj,
+    {
+      headers: { authorization: getTokenFromLocalStorage() },
+    }
+  );
   console.log(response, "at posting tasks to backend");
   return response;
 }
 
 async function deleteTaskFromList(taskObjID) {
-  let taskItems = await getLocalTaskList("taskList");
-  console.log(taskItems, taskObjID, "before tasks deleted");
-  let deleteItemIndex = taskItems.findIndex((taskItem) => {
-    return taskItem.id === taskObjID;
-  });
-  console.log(deleteItemIndex, "deleteItemIndex at 103");
-  if (deleteItemIndex < 0) return getLocalTaskList("taskList");
-  taskItems.splice(deleteItemIndex >= 0 && deleteItemIndex, 1);
-  setLocalTaskList(taskItems);
-  console.log("after deleted", taskList);
-  return getLocalTaskList("taskList");
-}
-
-async function setLocalTaskList(taskList) {
-  return localStorage.setItem("taskList", JSON.stringify(taskList));
-}
-
-async function getLocalTaskList(taskListFromStorage) {
   try {
-    const response = await axios.get(`${BACKEND}/tasks`);
+    let afterDeletingResponse = await axios.delete(
+      `${BACKEND}/${getUserIDFromLocalStorage()}/tasks/${taskObjID}`,
+      {
+        headers: { authorization: getTokenFromLocalStorage() },
+      }
+    );
+
+    console.log(deleteItemIndex, "deleteItemIndex at 103");
+    if (deleteItemIndex < 0) return getTaskListFromApi("taskList");
+    taskItems.splice(deleteItemIndex >= 0 && deleteItemIndex, 1);
+    showToast("Deleted task successfully");
+  } catch (err) {
+    showToast("Error in deleting task");
+    console.error(err);
+  }
+  return getTaskListFromApi("taskList");
+}
+
+async function getTaskListFromApi(taskListFromStorage) {
+  try {
+    const response = await axios.get(
+      `${BACKEND}/${getUserIDFromLocalStorage()}/tasks`,
+      {
+        headers: { authorization: getTokenFromLocalStorage() },
+      }
+    );
     console.log(response, "at getting task List from backend");
     return response.data.response;
   } catch (err) {
@@ -251,9 +279,9 @@ async function getLocalTaskList(taskListFromStorage) {
 }
 
 function findElement(taskID, arr) {
-  return arr.find((item) => item.id === taskID);
+  return arr.find((item) => item._id === taskID);
 }
 
-export { taskList, renderList, toastBar };
+export { taskList, renderList };
 const a = "text-value-test";
 export { a };
